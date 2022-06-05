@@ -1,0 +1,85 @@
+// ============ database ===============
+show dbs // show all dbs
+show users // show users
+show db // show current db
+db.dropDatabase() // delete database
+use products_db // use this database products_db or create it
+
+// create user admin
+db.createUser(
+   {
+     user: "accountUser",
+     pwd: passwordPrompt(),  // Or  "<cleartext password>"
+     roles: [ "readWrite", "dbAdmin" ]
+   }
+)
+
+// ============ collection ===============
+db.createCollection('users') // create collection users
+
+// Create collection with a $jsonschema
+db.createCollection("contacts", {
+   validator: {$jsonSchema: {
+      bsonType: "object",
+      required: ["phone"],
+      properties: {
+         phone: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         email: {
+            bsonType: "string",
+            pattern: "@mongodb\.com$",
+            description: "must be a string and match the regular expression pattern"
+         },
+         status: {
+            enum: [ "Unknown", "Incomplete" ],
+            description: "can only be one of the enum values"
+         }
+      }
+     }
+    }
+  }
+)
+
+
+show collections // show all collection
+
+
+db.users.insertOne({name: "Max"})
+db.users.insert([{name: "Max"}, {name:"Alex"}])
+
+db.users.findOne() // returns a single document
+db.users.find()    // returns a cursor - show 20 results - "it" to display more
+db.users.find({gender: "male"}).count()
+db.users.find().pretty()
+db.users.find({name: "Thomas"}).limit(3).sort({name: 1})
+db.users.find({$or: [{name: "sam"}, {name: "bam"}]})
+
+db.users.count({age: 20})
+
+db.users.update({name: "emily"}, {$set: {"title": 'lorem ipsum title'}}) // create title field
+db.users.update({name: "emily"}, {$unset: {year: 1}}) // remove title field
+
+db.users.update({name: "john"}, {$inc: {age: 5}})
+db.users.update({city: "new york"}, {$rename: {"gender": "sex"}})
+db.posts.update({ title: 'user Two' }, {title: 'user Two', body: 'New body for user 2', date: Date()}, {upsert: true}) // if not exist , create it
+
+db.users.remove({ title: 'title 1' })
+db.users.remove({ title: 'title 1' }, {justOne: true})
+db.users.remove({}) // all records in collection
+
+// ascending order
+db.users.find().sort({ title: 1 }).pretty()
+// descending order
+db.users.find().sort({ title: -1 }).pretty()
+
+// for-each 
+db.users.find().forEach(function(doc) {
+  print("Blog Post: " + doc.title)
+})
+
+db.users.find({ views: { $gt: 2 } }) // greater than
+db.users.find({ views: { $gte: 7 } }) // greater than equal
+db.users.find({ views: { $lt: 7 } }) // less than
+db.users.find({ views: { $lte: 7 } }) // less than equal
