@@ -1,0 +1,5 @@
+prisma schema --> define models
+prisma studio --> GUI of data
+prisma migrate --> sync the data and models
+prisma client --> to read and write data inside js
+prisma generate --> to update schema and data inside js
