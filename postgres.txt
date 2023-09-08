@@ -1,0 +1,30 @@
+sudo systemctl start postgresql
+
+sudo systemctl stop postgresql
+
+sudo systemctl restart postgresql
+
+sudo -u postgres psql
+
+// create user
+createuser --interactive --pwprompt your_username
+
+\q --> exit
+\l --> list pf db and user
+\q --> connect to db
+sudo -u esrafil psql -d dbname
+
+
+CREATE DATABASE database_name;
+DROP DATABASE database_name;
+CREATE USER username WITH PASSWORD 'password';
+GRANT privilege(s) ON table_name TO username;
+ALTER USER username WITH PASSWORD 'new_password';
+DROP USER username;
+
+// backup db
+pg_dump -U username -d database_name -f backup_file.sql
+
+// restore db
+psql -U username -d database_name -f backup_file.sql
+
