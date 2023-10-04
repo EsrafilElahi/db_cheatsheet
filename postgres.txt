@@ -5,9 +5,8 @@ sudo systemctl stop postgresql
 sudo systemctl restart postgresql
 
 sudo -u postgres psql
+CREATE USER your_username WITH SUPERUSER PASSWORD 'your_password';
 
-// create user
-createuser --interactive --pwprompt your_username
 
 \q --> exit
 \l --> list pf db and user
@@ -20,7 +19,9 @@ sudo -u esrafil psql -d dbname
 
 CREATE DATABASE database_name;
 DROP DATABASE database_name;
-CREATE USER your_username WITH SUPERUSER PASSWORD 'your_password';
+
+ALTER USER your_username WITH SUPERUSER;
+
 GRANT privilege(s) ON table_name TO username;
 
 GRANT USAGE ON SCHEMA public TO your_user; // if permission denied , this work
