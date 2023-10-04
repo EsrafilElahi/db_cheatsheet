@@ -20,7 +20,7 @@ sudo -u esrafil psql -d dbname
 
 CREATE DATABASE database_name;
 DROP DATABASE database_name;
-CREATE USER username WITH PASSWORD 'password';
+CREATE USER your_username WITH SUPERUSER PASSWORD 'your_password';
 GRANT privilege(s) ON table_name TO username;
 
 GRANT USAGE ON SCHEMA public TO your_user; // if permission denied , this work
