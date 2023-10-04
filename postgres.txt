@@ -12,6 +12,8 @@ createuser --interactive --pwprompt your_username
 \q --> exit
 \l --> list pf db and user
 \q --> connect to db
+\du --> see users with permissions
+
 sudo -u esrafil psql -d dbname
 
 
