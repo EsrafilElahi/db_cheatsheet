@@ -1,3 +1,5 @@
+// my laptop ---> username : esrafil, password: 1234
+
 sudo systemctl start postgresql
 
 sudo systemctl stop postgresql
