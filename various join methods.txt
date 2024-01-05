@@ -1,0 +1,110 @@
+Left Join:
+// video.service.ts
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Video } from './entities/video.entity';
+
+@Injectable()
+export class VideoService {
+  constructor(
+    @InjectRepository(Video)
+    private readonly videoRepository: Repository<Video>,
+  ) {}
+
+  async getVideosWithLikesAndUsers(): Promise<Video[]> {
+    return this.videoRepository
+      .createQueryBuilder('video')
+      .leftJoinAndSelect('video.likes', 'like')
+      .leftJoinAndSelect('like.user', 'user')
+      .getMany();
+  }
+}
+
+
+
+Right Join:
+// user.service.ts
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
+
+@Injectable()
+export class UserService {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
+
+  async getUsersWithLikedVideos(): Promise<User[]> {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .rightJoinAndSelect('user.likes', 'like')
+      .rightJoinAndSelect('like.video', 'video')
+      .getMany();
+  }
+}
+
+
+    
+Inner Join:
+// comment.service.ts
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Comment } from './entities/comment.entity';
+
+@Injectable()
+export class CommentService {
+  constructor(
+    @InjectRepository(Comment)
+    private readonly commentRepository: Repository<Comment>,
+  ) {}
+
+  async getCommentsWithUsers(): Promise<Comment[]> {
+    return this.commentRepository
+      .createQueryBuilder('comment')
+      .innerJoinAndSelect('comment.user', 'user')
+      .getMany();
+  }
+}
+
+
+    
+Full Join
+// comment.service.ts
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Comment } from './entities/comment.entity';
+
+@Injectable()
+export class CommentService {
+  constructor(
+    @InjectRepository(Comment)
+    private readonly commentRepository: Repository<Comment>,
+  ) {}
+
+  async getCommentsWithUsers(): Promise<Comment[]> {
+    const leftJoinQuery = this.commentRepository
+      .createQueryBuilder('comment')
+      .leftJoinAndSelect('comment.user', 'user');
+
+    const rightJoinQuery = this.commentRepository
+      .createQueryBuilder('comment')
+      .leftJoinAndSelect('comment.user', 'user');
+
+    const unionQuery = this.commentRepository
+      .createQueryBuilder()
+      .select('*')
+      .from(`(${leftJoinQuery.getQuery()})`, 'left')
+      .union(`(${rightJoinQuery.getQuery()})`);
+
+    return this.commentRepository
+      .createQueryBuilder('comment')
+      .select('*')
+      .from(`(${unionQuery.getQuery()})`, 'full_join_comments')
+      .getRawMany();
+  }
+}
