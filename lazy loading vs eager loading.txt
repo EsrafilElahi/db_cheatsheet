@@ -1,0 +1,9 @@
+Choosing Between Lazy Loading and Eager Loading:
+
+Use Lazy Loading When:
+  You have a large dataset, and not all related entities are always needed.
+  You want to minimize the initial data load and fetch related entities only when required.
+  
+Use Eager Loading When:
+  You frequently need the related entities along with the main entity.
+  The cost of fetching related entities is not significant compared to the benefits of reduced subsequent queries.
