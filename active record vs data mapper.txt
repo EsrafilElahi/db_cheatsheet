@@ -1,0 +1,81 @@
+1. Active Record Pattern:
+  Active Record is a design pattern that encapsulates business logic and database access within a single class. Each entity in the system is represented by a class, and instances of that class are used to interact with the database.
+
+// video.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+@Entity()
+export class Video {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  title: string;
+
+  @Column()
+  description: string;
+
+  // Other fields...
+
+  // Active Record methods
+  static async findById(id: number): Promise<Video | undefined> {
+    return await Video.findOne(id);
+  }
+
+  async save(): Promise<Video> {
+    return await Video.save(this);
+  }
+
+  async update(): Promise<Video> {
+    return await Video.update(this.id, this);
+  }
+
+  async remove(): Promise<void> {
+    return await Video.delete(this.id);
+  }
+}
+
+
+// usage 
+const video = new Video();
+video.title = 'Sample Video';
+video.description = 'This is a sample video description.';
+await video.save();
+
+const retrievedVideo = await Video.findById(video.id);
+console.log(retrievedVideo);
+
+  
+2. Data Mapper Pattern:
+  Data Mapper is a design pattern that separates the business logic from the database access. It uses a separate mapper class to handle the communication between the application and the database. Entities are plain JavaScript/TypeScript objects, and the mapper is responsible for mapping them to and from the database.
+
+
+  // video.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+@Entity()
+export class Video {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  title: string;
+
+  @Column()
+  description: string;
+
+  // Other fields...
+}
+
+
+// usage
+const videoRepository = getRepository(Video);
+
+const video = new Video();
+video.title = 'Sample Video';
+video.description = 'This is a sample video description.';
+
+await videoRepository.save(video);
+
+const retrievedVideo = await videoRepository.findOne(video.id);
+console.log(retrievedVideo);
