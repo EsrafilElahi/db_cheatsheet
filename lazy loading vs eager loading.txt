@@ -7,3 +7,79 @@ Use Lazy Loading When:
 Use Eager Loading When:
   You frequently need the related entities along with the main entity.
   The cost of fetching related entities is not significant compared to the benefits of reduced subsequent queries.
+
+
+<<<Lazy Loading>>>:
+// video.entity.ts
+import { Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Like } from './like.entity';
+
+@Entity()
+export class Video {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @OneToMany(() => Like, like => like.video)
+  likes: Like[];
+  // Other video fields...
+}
+======================================== usage ========================================
+// video.service.ts
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Video } from './entities/video.entity';
+
+@Injectable()
+export class VideoService {
+  constructor(
+    @InjectRepository(Video)
+    private readonly videoRepository: Repository<Video>,
+  ) {}
+
+  async getVideosWithLikesAndUsers(): Promise<Video[]> {
+    return this.videoRepository.find({ relations: ['likes', 'likes.user'] });
+  }
+}
+
+
+
+
+<<<Eager Loading>>>:
+// user.entity.ts
+import { Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Like } from './like.entity';
+import { Comment } from './comment.entity';
+
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @OneToMany(() => Like, like => like.user)
+  likes: Like[];
+
+  @OneToMany(() => Comment, comment => comment.user)
+  comments: Comment[];
+  // Other user fields...
+}
+
+======================================== usage ========================================
+
+// user.service.ts
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
+
+@Injectable()
+export class UserService {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
+
+  async getUsersWithLikedVideosAndComments(): Promise<User[]> {
+    return this.userRepository.find({ relations: ['likes', 'likes.video', 'comments'] });
+  }
+}
