@@ -1,3 +1,6 @@
+* If you want to retrieve data without using explicit join methods, you can use TypeORM's lazy loading or eager loading features.
+
+
 Left Join:
 // video.service.ts
 import { Injectable } from '@nestjs/common';
