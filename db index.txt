@@ -1,7 +1,7 @@
 Index Improves Database Performance
 
 Default (GPT-3.5)
-
+ 
 User
 ایندکس توی دیتابیس چیست و چگونه باعث افزایش پرفورمنس میشه؟ با سناریو بگو
 
