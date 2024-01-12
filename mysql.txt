@@ -1,0 +1,21 @@
+SHOW DATABASES;
+USE database_name;
+SELECT CURRENT_USER();
+
+list users ---> SELECT User FROM mysql.user;
+show user's privileges ---> SELECT Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv FROM mysql.user;
+show grants for user ---> SHOW GRANTS FOR 'username'@'hostname';
+reset password ---> ALTER USER 'esrafil'@'localhost' IDENTIFIED BY 'new_password';
+
+-- Create a new user
+CREATE USER 'your_username'@'localhost' IDENTIFIED BY 'your_password';
+
+-- Grant all privileges on all databases to the user
+GRANT ALL PRIVILEGES ON *.* TO 'your_username'@'localhost' WITH GRANT OPTION;
+
+-- Flush privileges to apply the changes
+FLUSH PRIVILEGES;
+
+
+// inter with specific user
+mysql -u esrafil -p
