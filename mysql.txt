@@ -2,8 +2,11 @@ install adminer on ubuntu:
 https://www.makeuseof.com/how-to-install-adminer-on-ubuntu/
 
 SHOW DATABASES;
+CREATE DATABASE my_database;
 USE database_name;
-SELECT CURRENT_USER();
+SELECT CURRENT_USER(); ---> show current user
+SELECT DATABASE(); ---> show current database
+
 
 list users ---> SELECT User FROM mysql.user;
 show user's privileges ---> SELECT Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv FROM mysql.user;
