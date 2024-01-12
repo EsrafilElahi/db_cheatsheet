@@ -1,0 +1,3 @@
+forRoot / forRootAsync: configure a module one time. This is either for a global service, or a re-used configuration internally
+forFeature / forFeatureAsync: make use of the configuration from forRoot/forRootAsync for a specific provider. This usually creates an injection token.
+register / registerAsync: a module that can be registered multiple times with different configurations each time.
