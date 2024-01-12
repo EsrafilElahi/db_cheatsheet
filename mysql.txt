@@ -1,3 +1,6 @@
+install adminer on ubuntu:
+https://www.makeuseof.com/how-to-install-adminer-on-ubuntu/
+
 SHOW DATABASES;
 USE database_name;
 SELECT CURRENT_USER();
