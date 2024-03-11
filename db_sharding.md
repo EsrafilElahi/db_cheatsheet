@@ -2,7 +2,7 @@ Data sharding is a technique used in database management systems to horizontally
 
 * vertical sharding
 * horizontal sharding
-
+ 
 exmaple : we have big data users
 shard_1 : asian customers --> separate server geographical locate
 sahrd_2 : europian customers --> separate server geographical locate
